@@ -85,7 +85,7 @@ def stream():
     for i in uploaded_file:
         names = i.name 
         st.write(f"YOU SELECTED : {names}")
-        st.write(ipd.Audio(full_path_file_name)) 
+        st.write(ipd.Audio(names)) 
         
 
     col1, col2, col3 = st.columns(3)
