@@ -86,14 +86,13 @@ def stream():
     current_dir = os.getcwd()
     st.write(current_dir)
     uploading_path = os.path.join(current_dir, directory_name)
-    os.mkdir(uploading_path)
     
     for i in uploaded_file:
         names = i.name 
         full_path_file_name = os.path.join(uploading_path, names)
         st.write(f"YOU SELECTED : {names}")
         st.write("FILE : ", full_path_file_name)
-        st.write(ipd.Audio(full_path_file_name))
+        st.write(ipd.Audio(full_path_file_name)) 
 
     col1, col2, col3 = st.columns(3)
     user_audio_name = f"{user_audio_name}.wav"
