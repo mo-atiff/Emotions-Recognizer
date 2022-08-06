@@ -82,16 +82,9 @@ def stream():
         "CHOOSE A FILE", accept_multiple_files=True)
     print("uploaded :  ", len(uploaded_file))
     
-    directory_name = "Audio"
-    current_dir = os.getcwd()
-    uploading_path = os.path.join(current_dir, directory_name)
-    st.write("WITHOUT FILE.WAV PATH : ", os.listdir(uploading_path))
-    
     for i in uploaded_file:
         names = i.name 
-        full_path_file_name = os.path.join(uploading_path, names)
         st.write(f"YOU SELECTED : {names}")
-        st.write("dekho", full_path_file_name)
         st.write(ipd.Audio(full_path_file_name)) 
         
 
