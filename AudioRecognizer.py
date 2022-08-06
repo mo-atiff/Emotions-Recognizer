@@ -84,8 +84,9 @@ def stream():
     
     for i in uploaded_file:
         names = i.name 
+        names2 = os.path.abspath(names)
         st.write(f"YOU SELECTED : {names}")
-        st.write(ipd.Audio(names)) 
+        st.write(ipd.Audio(names2)) 
         
 
     col1, col2, col3 = st.columns(3)
@@ -100,7 +101,7 @@ def stream():
         if predict:
             if len(uploaded_file) != 0:
                 print("File dragged")
-                audioExtract(full_path_file_name) #user browsing file
+                audioExtract(names2) #user browsing file
             else:
                 print("file recorded")
                 audioExtract(user_audio_name)
