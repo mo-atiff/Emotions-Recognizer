@@ -81,6 +81,12 @@ def stream():
     uploaded_file = st.file_uploader(
         "CHOOSE A FILE", accept_multiple_files=True)
     print("uploaded :  ", len(uploaded_file))
+    
+    directory_name = "Audio"
+    current_dir = os.getcwd()
+    path = os.path.join(current_dir, directory_name)
+    st.write(path)
+    
     for i in uploaded_file:
         names = i.name
         st.write(f"YOU SELECTED : {names}")
