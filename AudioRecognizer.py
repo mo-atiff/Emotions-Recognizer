@@ -84,6 +84,7 @@ def stream():
     
     directory_name = "Audio"
     current_dir = os.getcwd()
+    st.write(current_dir)
     uploading_path = os.path.join(current_dir, directory_name)
     
     for i in uploaded_file:
