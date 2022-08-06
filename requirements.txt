@@ -19,8 +19,3 @@ tensorflow==2.8.0rc1
 wavio==0.0.4
 webdriver_manager==3.5.4
 youtube_comment_scraper_python==1.0.0
-freeglut3-dev
-libgtk2.0-dev
-libasound2-dev
-libsndfile1-dev
-ffmpeg
