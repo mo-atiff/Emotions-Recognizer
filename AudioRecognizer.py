@@ -1,4 +1,3 @@
-import tensorflow
 from keras.models import load_model
 import librosa
 import pickle
@@ -86,15 +85,12 @@ def stream():
     directory_name = "Audio"
     current_dir = os.getcwd()
     uploading_path = os.path.join(current_dir, directory_name)
-#     st.write(path)
     
     for i in uploaded_file:
         names = i.name 
         full_path_file_name = os.path.join(uploading_path, names)
-        st.write("File : ", full_path_file_name)
-#         user_browse_file = open(full_path_file_name, "rb")
         st.write(f"YOU SELECTED : {names}")
-        st.write(ipd.Audio(names))
+        st.write(ipd.Audio(full_path_file_name))
 
     col1, col2, col3 = st.columns(3)
     user_audio_name = f"{user_audio_name}.wav"
@@ -108,7 +104,7 @@ def stream():
         if predict:
             if len(uploaded_file) != 0:
                 print("File dragged")
-                audioExtract(names)
+                audioExtract(full_path_file_name) #user browsing file
             else:
                 print("file recorded")
                 audioExtract(user_audio_name)
