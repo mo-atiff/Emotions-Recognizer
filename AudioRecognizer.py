@@ -85,11 +85,14 @@ def stream():
     
     directory_name = "Audio"
     current_dir = os.getcwd()
-    path = os.path.join(current_dir, directory_name)
-    st.write(path)
+    uploading_path = os.path.join(current_dir, directory_name)
+#     st.write(path)
     
     for i in uploaded_file:
-        names = i.name
+        names = i.name 
+        full_path_file_name = os.path.join(uploading_path, names)
+        st.write("File : ", full_path_file_name)
+#         user_browse_file = open(full_path_file_name, "rb")
         st.write(f"YOU SELECTED : {names}")
         st.write(ipd.Audio(names))
 
