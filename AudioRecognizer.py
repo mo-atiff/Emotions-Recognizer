@@ -16,8 +16,8 @@ duration = 6
 # names = None
 
 
-model = load_model("C:\\Users\\ATIF SHAIK\\Neuron")
-label = pickle.load(open("C:\\Users\\ATIF SHAIK\\EmotionLabels.pkl", 'rb'))
+model = load_model("Neuron")
+label = pickle.load(open("EmotionLabels.pkl", 'rb'))
 
 
 def audioExtract(file_name):
