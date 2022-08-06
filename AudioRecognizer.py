@@ -85,6 +85,7 @@ def stream():
     for i in uploaded_file:
         names = i.name 
         names2 = os.path.abspath(names)
+        st.write("See : ", names2)
         st.write(f"YOU SELECTED : {names}")
         st.write(ipd.Audio(names2)) 
         
