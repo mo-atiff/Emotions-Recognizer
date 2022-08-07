@@ -181,7 +181,7 @@ def stream():
         names = i.name
         st.write(f"YOU SELECTED : {names}")
 #         st.write(ipd.Audio(os.path.join("audio\\\{}".format(names))))
-        st.write(os.path.join("audio", names))
+        st.write(ipd.Audio(os.path.join("audio", names)))
         flag = 2
 # -----------------------------------------------------------------------------------------------------------------------------------
     col1, col2, col3, col4, col5 = st.columns(5)
