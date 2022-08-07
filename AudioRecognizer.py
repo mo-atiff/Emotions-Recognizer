@@ -7,7 +7,6 @@ import numpy as np
 import streamlit as st
 import sounddevice as sd
 from scipy.io.wavfile import write
-import wavio as wv
 import IPython.display as ipd
 import os
 from matplotlib import pyplot as plt
@@ -41,7 +40,6 @@ def save_audio(file):
         if i.size > 4000000:
             return 1
         folder = "Audio"
-#         os.mkdir(folder)
         datetoday = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         # clear the folder to avoid storage overload
         for filename in os.listdir(folder):
@@ -60,10 +58,11 @@ def save_audio(file):
 
         with open(os.path.join(folder, i.name), "wb") as f:
             f.write(i.getbuffer())
+        st.write("saved")
         return 0
 
 
-def audioExtract(file_name):
+def audioExtract(file_name, model):
     final = []
     audio, sam = librosa.load(file_name, res_type='kaiser_fast')
     mfccs_features = librosa.feature.mfcc(
@@ -77,7 +76,7 @@ def audioExtract(file_name):
     for i in label.classes_:
         d.append(i)
 
-    print(d)
+    # print(d)
 
     output = []
     for i in predicted:
@@ -93,6 +92,7 @@ def audioExtract(file_name):
             # f"EMOTION : {d[i].upper()}")
             # st.subheader(f"    {d[i].upper()}")
             myemotion = d[i].upper()
+            print("idhar")
 
             if myemotion == "ANGRY":
                 st.markdown("<h2 style='text-align: centre; color: red;'>ANGRY</h2>",
@@ -103,6 +103,7 @@ def audioExtract(file_name):
                             unsafe_allow_html=True)
 
             elif myemotion == "FEAR":
+                print("911 was bad")
                 st.markdown("<h2 style='text-align: centre; color: brown;'>FEAR</h2>",
                             unsafe_allow_html=True)
 
@@ -178,7 +179,8 @@ def stream():
         flag = 2
 # -----------------------------------------------------------------------------------------------------------------------------------
     col1, col2, col3, col4, col5 = st.columns(5)
-    user_audio_name = "Audio\\\{}.wav".format(user_audio_name)
+    # user_audio_name = "Audio\\\{}.wav".format(user_audio_name)
+    user_audio_name = f"{user_audio_name}.wav"
     with col3:
         st.write(' ')
         st.write(' ')
@@ -189,10 +191,12 @@ def stream():
         if predict:
             if len(uploaded_file) != 0:
                 print("File dragged")
-                audioExtract("Audio\\\{}".format(names))
+                # audioExtract("Audio\\\{}".format(names))
+                audioExtract(os.path.join("Audio", names), model)
             else:
                 print("file recorded")
-                audioExtract(user_audio_name)
+                audioExtract(os.join("Audio", user_audio_name), model)
+                # audioExtract(os.path.join("Audio", ), user_audio_name)
 
     def plotextract(filename):
         y, sr = librosa.load(filename, res_type='kaiser_fast')
