@@ -140,10 +140,10 @@ def record(filename):
                            samplerate=freq, channels=2)
 
         sd.wait()
-        write("audio\\\{}.wav".format(filename), freq, recording)
+        write(os.path.join("audio", filename), freq, recording)
         print("saved")
         st.write(f"SELECTED FILE : {filename}.wav")
-        st.write(ipd.Audio("audio\\\{}.wav".format(filename)))
+        st.write(ipd.Audio(os.path.join("audio", filename)))
         st.write("SCROLL DOWN AND CLICK EMOTIONS BUTTON (⬇)")
 
 
@@ -186,7 +186,8 @@ def stream():
 # -----------------------------------------------------------------------------------------------------------------------------------
     col1, col2, col3, col4, col5 = st.columns(5)
     # user_audio_name = "Audio\\\{}.wav".format(user_audio_name)
-    user_audio_name = f"{user_audio_name}.wav"
+#     user_audio_name = f"{user_audio_name}.wav"
+    user_audio_name = os.path.join("audio", user_audio_name)
     with col3:
         st.write(' ')
         st.write(' ')
@@ -236,11 +237,11 @@ def stream():
         elif flag == 2:
             print("in2 iam here")
             with col11:
-                kp = plotextract("audio\\\{}".format(names))
+                kp = plotextract(os.path.join("audio", names))
                 st.subheader("YOUR VOICE")
                 st.line_chart(kp)
             with col22:
-                pk = plotspec("audio\\\{}".format(names))
+                pk = plotspec(os.path.join("audio", names))
                 fig, ax = plt.subplots()
                 cax = ax.imshow(pk, interpolation='nearest',
                                 cmap=cm.coolwarm, origin='lower')
