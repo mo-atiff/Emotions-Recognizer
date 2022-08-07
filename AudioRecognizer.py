@@ -1,24 +1,65 @@
 from keras.models import load_model
 import librosa
+import librosa.display
 import pickle
+import pandas as pd
 import numpy as np
 import streamlit as st
 import sounddevice as sd
 from scipy.io.wavfile import write
 import wavio as wv
-import time
 import IPython.display as ipd
 import os
+from matplotlib import pyplot as plt
+from matplotlib import cm
+from datetime import datetime
 
 freq = 22050
 
 duration = 6
-# global names
-# names = None
 
 
 model = load_model("Neuron")
 label = pickle.load(open("EmotionLabels.pkl", 'rb'))
+
+
+st.set_page_config(
+    page_title="Audio Emotion Recognizer",
+    page_icon="🔊",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://www.extremelycoolapp.com/help',
+        'Report a bug': "https://www.extremelycoolapp.com/bug",
+        'About': "# This is a header. This is an *extremely* cool app!"
+    }
+)
+
+
+def save_audio(file):
+    for i in file:
+        if i.size > 4000000:
+            return 1
+        folder = "Audio"
+        datetoday = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        # clear the folder to avoid storage overload
+        for filename in os.listdir(folder):
+            file_path = os.path.join(folder, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+            except Exception as e:
+                print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+        try:
+            with open("log0.txt", "a") as f:
+                f.write(f"{i.name} - {i.size} - {datetoday};\n")
+        except:
+            pass
+
+        with open(os.path.join(folder, i.name), "wb") as f:
+            f.write(i.getbuffer())
+        return 0
 
 
 def audioExtract(file_name):
@@ -35,6 +76,8 @@ def audioExtract(file_name):
     for i in label.classes_:
         d.append(i)
 
+    print(d)
+
     output = []
     for i in predicted:
         kp = list(i)
@@ -44,66 +87,156 @@ def audioExtract(file_name):
     j = 0
     for i in range(len(output)):
         if round(output[i]) == 1:
-            # print(d[i])
-            st.subheader(
-                f"YOUR EMOTION SOUNDS LIKE : {d[i].upper()}")
+            st.subheader("YOUR EMOTION : ")
+            # st.subheader(
+            # f"EMOTION : {d[i].upper()}")
+            # st.subheader(f"    {d[i].upper()}")
+            myemotion = d[i].upper()
+
+            if myemotion == "ANGRY":
+                st.markdown("<h2 style='text-align: centre; color: red;'>ANGRY</h2>",
+                            unsafe_allow_html=True)
+
+            elif myemotion == "DISGUST":
+                st.markdown("<h2 style='text-align: centre; color: purple;'>DISGUIST</h2>",
+                            unsafe_allow_html=True)
+
+            elif myemotion == "FEAR":
+                st.markdown("<h2 style='text-align: centre; color: brown;'>FEAR</h2>",
+                            unsafe_allow_html=True)
+
+            elif myemotion == "HAPPY":
+                st.markdown("<h2 style='text-align: centre; color: yellow;'>HAPPY</h2>",
+                            unsafe_allow_html=True)
+
+            elif myemotion == "NEUTRAL":
+                st.markdown("<h2 style='text-align: centre; color: blue;'>NEUTRAL</h2>",
+                            unsafe_allow_html=True)
+
+            elif myemotion == "PLEASANT":
+                st.markdown("<h2 style='text-align: centre; color: white;'>PLEASANT</h2>",
+                            unsafe_allow_html=True)
+
+            elif myemotion == "SAD":
+                st.markdown("<h2 style='text-align: centre; color: grey;'>SAD</h2>",
+                            unsafe_allow_html=True)
+
+            st.write(' ')
+            st.write(' ')
+            st.write(' ')
             break
 
 
 def record(filename):
-    with st.spinner('Started Recording... It will automatically quit after 5 secs'):
+    with st.spinner(f'Started Recording... It will automatically quit after 5 secs'):
         recording = sd.rec(int(duration * freq),
                            samplerate=freq, channels=2)
 
         sd.wait()
-
-        write(f"{filename}.wav", freq, recording)
+        write("Audio\\\{}.wav".format(filename), freq, recording)
         print("saved")
-        st.write(f"SELECTED FILE {filename}.wav")
+        st.write(f"SELECTED FILE : {filename}.wav")
+        st.write(ipd.Audio("Audio\\\{}.wav".format(filename)))
+        st.write("SCROLL DOWN AND CLICK EMOTIONS BUTTON (⬇)")
 
 
 def stream():
-    st.title('EMOTIONS RECOGNIZER')
-    intro = 'DEVELOPED WITH ❤️ BY ATIF | RHEA | AND ANUSHRI'
-    st.header(intro)
-    st.write("*"*100)
-    st.subheader("RECORD YOUR OWN AUDIO")
-    user_audio_name = st.text_input('WRITE FILE NAME WITH NO EXTENSIONS: ', '')
-    recording_but = st.button("START RECORDING")
+    global flag
+    flag = 0
+    st.markdown("<h1 style='text-align: centre; color: red;'>EMOTIONS RECOGNIZER 😡 😖 😱 😄 😐 😔 😮</h1>",
+                unsafe_allow_html=True)
+
+    st.markdown("<h1 style='text-align: centre; color: white;'>DEVELOPED AS 🤖 BY ATIF RHEA AND ANUSHRI</h1>",
+                unsafe_allow_html=True)
+# -------------------------------------------------------------------------------------------------------------------------------------------
+    st.write("-"*100)
+    st.markdown("<h3 style='text-align: centre; color: cyan;'>RECORD YOUR OWN AUDIO</h3>",
+                unsafe_allow_html=True)
+    user_audio_name = st.text_input(
+        'WRITE FILE NAME WITH NO EXTENSIONS: ', '')
+
+    recording_but = st.button("START RECORDING ⏺️")
     if recording_but:
         if len(user_audio_name) != 0:
             record(user_audio_name)
+            flag = 1
         else:
             st.error("FILE NAME CAN'T BE EMPTY")
-
+# ---------------------------------------------------------------------------------------------------------------------------------------------
     st.write("-"*100)
-    st.subheader("SELECT a .wav FILE")
+    st.markdown("<h3 style='text-align: centre; color: cyan;'>SELECT a .wav FILE</h3>",
+                unsafe_allow_html=True)
     uploaded_file = st.file_uploader(
-        "CHOOSE A FILE", accept_multiple_files=True)
+        "CHOOSE A FILE (Do not select multiple files)", accept_multiple_files=True)
     print("uploaded :  ", len(uploaded_file))
-    
+    save_audio(uploaded_file)
     for i in uploaded_file:
-        names = i.name 
+        names = i.name
         st.write(f"YOU SELECTED : {names}")
-        st.write(ipd.Audio(names)) 
-        
-
-    col1, col2, col3 = st.columns(3)
-    user_audio_name = f"{user_audio_name}.wav"
-    with col2:
+        st.write(ipd.Audio("Audio\\\{}".format(names)))
+        flag = 2
+# -----------------------------------------------------------------------------------------------------------------------------------
+    col1, col2, col3, col4, col5 = st.columns(5)
+    user_audio_name = "Audio\\\{}.wav".format(user_audio_name)
+    with col3:
         st.write(' ')
         st.write(' ')
         st.write(' ')
         st.write(' ')
         st.write(' ')
-        predict = st.button("EMOTION CHECK")
+        predict = st.button("EMOTION CHECK 💘")
         if predict:
             if len(uploaded_file) != 0:
                 print("File dragged")
-                audioExtract(names) #user browsing file
+                audioExtract("Audio\\\{}".format(names))
             else:
                 print("file recorded")
                 audioExtract(user_audio_name)
+
+    def plotextract(filename):
+        y, sr = librosa.load(filename, res_type='kaiser_fast')
+        return y
+
+    def plotspec(filename):
+        y, sr = librosa.load(filename, res_type='kaiser_fast')
+        mfccs_features = librosa.feature.mfcc(
+            y=y, sr=sr, n_mfcc=40)
+        return mfccs_features
+
+    col11, col22 = st.columns(2)
+    print("Flag : ", flag)
+    if predict:
+        if flag == 0:
+            print("iam here")
+            with col11:
+                kp = plotextract(user_audio_name)
+                st.subheader("YOUR VOICE")
+                st.line_chart(kp)
+            with col22:
+                pk = plotspec(user_audio_name)
+                fig, ax = plt.subplots()
+                cax = ax.imshow(pk, interpolation='nearest',
+                                cmap=cm.coolwarm, origin='lower')
+                ax.set_title('MFCC')
+                ax.set_xlabel('Time')
+                st.subheader("Mel-frequency cepstral coefficients".upper())
+                st.write(fig)
+
+        elif flag == 2:
+            print("in2 iam here")
+            with col11:
+                kp = plotextract("Audio\\\{}".format(names))
+                st.subheader("YOUR VOICE")
+                st.line_chart(kp)
+            with col22:
+                pk = plotspec("Audio\\\{}".format(names))
+                fig, ax = plt.subplots()
+                cax = ax.imshow(pk, interpolation='nearest',
+                                cmap=cm.coolwarm, origin='lower')
+                ax.set_title('MFCC')
+                ax.set_xlabel('Time')
+                st.subheader("Mel-frequency cepstral coefficients".upper())
+                st.write(fig)
 
 
 stream()
