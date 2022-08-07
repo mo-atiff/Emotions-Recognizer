@@ -63,7 +63,7 @@ def save_audio(file):
 
         with open(os.path.join(folder, i.name), "wb") as f:
             f.write(i.getbuffer())
-        st.write(f"saved in : {file_path}")
+#         st.write(f"saved in : {file_path}")
         return 0
 
 
@@ -180,7 +180,7 @@ def stream():
     for i in uploaded_file:
         names = i.name
         st.write(f"YOU SELECTED : {names}")
-        st.write(ipd.Audio("audio\\\{}".format(names)))
+        st.write(ipd.Audio(os.path.join("audio\\\{}".format(names))))
         flag = 2
 # -----------------------------------------------------------------------------------------------------------------------------------
     col1, col2, col3, col4, col5 = st.columns(5)
