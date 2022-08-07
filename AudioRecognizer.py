@@ -172,6 +172,7 @@ def stream():
         "CHOOSE A FILE (Do not select multiple files)", accept_multiple_files=True)
     print("uploaded :  ", len(uploaded_file))
     save_audio(uploaded_file)
+    st.write("Audio saved")
     for i in uploaded_file:
         names = i.name
         st.write(f"YOU SELECTED : {names}")
