@@ -235,7 +235,7 @@ def stream():
         elif flag == 2:
             print("in2 iam here")
             with col11:
-                kp = plotextract("Audio\\\{}".format(names))
+                kp = plotextract("Audio\{}".format(names))
                 st.subheader("YOUR VOICE")
                 st.line_chart(kp)
             with col22:
