@@ -62,7 +62,7 @@ def save_audio(file):
 
         with open(os.path.join(folder, i.name), "wb") as f:
             f.write(i.getbuffer())
-        st.write("saved")
+#         st.write("saved")
         return 0
 
 
@@ -142,7 +142,7 @@ def record(filename):
         write("Audio\\\{}.wav".format(filename), freq, recording)
         print("saved")
         st.write(f"SELECTED FILE : {filename}.wav")
-        st.write(ipd.Audio("Audio\\\{}.wav".format(filename)))
+#         st.write(ipd.Audio("Audio\\\{}.wav".format(filename)))
         st.write("SCROLL DOWN AND CLICK EMOTIONS BUTTON (⬇)")
 
 
@@ -180,7 +180,7 @@ def stream():
     for i in uploaded_file:
         names = i.name
         st.write(f"YOU SELECTED : {names}")
-        st.write(ipd.Audio("Audio\\\{}".format(names)))
+#         st.write(ipd.Audio("Audio\\\{}".format(names)))
         flag = 2
 # -----------------------------------------------------------------------------------------------------------------------------------
     col1, col2, col3, col4, col5 = st.columns(5)
