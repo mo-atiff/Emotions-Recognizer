@@ -12,3 +12,4 @@ SoundFile==0.10.3.post1
 tensorflow==2.8.0rc1
 wavio==0.0.4
 webdriver_manager==3.5.4
+matplotlib==3.5.1
