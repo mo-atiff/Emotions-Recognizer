@@ -39,7 +39,12 @@ def save_audio(file):
     for i in file:
         if i.size > 4000000:
             return 1
+        
+        if not os.path.exists("audio"):
+            os.makedirs("audio")
+            
         folder = "audio"
+        
         datetoday = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         # clear the folder to avoid storage overload
         for filename in os.listdir(folder):
@@ -58,7 +63,7 @@ def save_audio(file):
 
         with open(os.path.join(folder, i.name), "wb") as f:
             f.write(i.getbuffer())
-        st.write("saved")
+        st.write(f"saved in : {file_path}")
         return 0
 
 
