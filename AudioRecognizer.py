@@ -42,6 +42,8 @@ def save_audio(file):
         folder = "Audio"
         if not os.path.exists("Audio"):
             os.makedirs("Audio")
+        else:
+            st.write("Folder exists")
         datetoday = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         # clear the folder to avoid storage overload
         for filename in os.listdir(folder):
