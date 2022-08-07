@@ -39,7 +39,7 @@ def save_audio(file):
     for i in file:
         if i.size > 4000000:
             return 1
-        folder = "Audio"
+        folder = "audio"
         datetoday = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         # clear the folder to avoid storage overload
         for filename in os.listdir(folder):
@@ -135,10 +135,10 @@ def record(filename):
                            samplerate=freq, channels=2)
 
         sd.wait()
-        write("Audio\\\{}.wav".format(filename), freq, recording)
+        write("audio\\\{}.wav".format(filename), freq, recording)
         print("saved")
         st.write(f"SELECTED FILE : {filename}.wav")
-        st.write(ipd.Audio("Audio\\\{}.wav".format(filename)))
+        st.write(ipd.Audio("audio\\\{}.wav".format(filename)))
         st.write("SCROLL DOWN AND CLICK EMOTIONS BUTTON (⬇)")
 
 
@@ -175,7 +175,7 @@ def stream():
     for i in uploaded_file:
         names = i.name
         st.write(f"YOU SELECTED : {names}")
-        st.write(ipd.Audio("Audio\\\{}".format(names)))
+        st.write(ipd.Audio("audio\\\{}".format(names)))
         flag = 2
 # -----------------------------------------------------------------------------------------------------------------------------------
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -192,10 +192,10 @@ def stream():
             if len(uploaded_file) != 0:
                 print("File dragged")
                 # audioExtract("Audio\\\{}".format(names))
-                audioExtract(os.path.join("Audio", names), model)
+                audioExtract(os.path.join("audio", names), model)
             else:
                 print("file recorded")
-                audioExtract(os.join("Audio", user_audio_name), model)
+                audioExtract(os.path.join("audio", user_audio_name), model)
                 # audioExtract(os.path.join("Audio", ), user_audio_name)
 
     def plotextract(filename):
@@ -230,11 +230,11 @@ def stream():
         elif flag == 2:
             print("in2 iam here")
             with col11:
-                kp = plotextract("Audio\\\{}".format(names))
+                kp = plotextract("audio\\\{}".format(names))
                 st.subheader("YOUR VOICE")
                 st.line_chart(kp)
             with col22:
-                pk = plotspec("Audio\\\{}".format(names))
+                pk = plotspec("audio\\\{}".format(names))
                 fig, ax = plt.subplots()
                 cax = ax.imshow(pk, interpolation='nearest',
                                 cmap=cm.coolwarm, origin='lower')
