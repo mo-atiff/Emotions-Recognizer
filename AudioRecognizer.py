@@ -18,8 +18,8 @@ freq = 22050
 duration = 6
 
 
-model = load_model("Neuron")
-label = pickle.load(open("EmotionLabels.pkl", 'rb'))
+model = load_model("C:\\Users\\ATIF SHAIK\\Neuron")
+label = pickle.load(open("C:\\Users\\ATIF SHAIK\\EmotionLabels.pkl", 'rb'))
 
 
 st.set_page_config(
@@ -40,10 +40,6 @@ def save_audio(file):
         if i.size > 4000000:
             return 1
         folder = "Audio"
-        if not os.path.exists("Audio"):
-            os.makedirs("Audio")
-        else:
-            st.write(os.getcwd())
         datetoday = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         # clear the folder to avoid storage overload
         for filename in os.listdir(folder):
@@ -62,7 +58,7 @@ def save_audio(file):
 
         with open(os.path.join(folder, i.name), "wb") as f:
             f.write(i.getbuffer())
-#         st.write("saved")
+        st.write("saved")
         return 0
 
 
@@ -142,7 +138,7 @@ def record(filename):
         write("Audio\\\{}.wav".format(filename), freq, recording)
         print("saved")
         st.write(f"SELECTED FILE : {filename}.wav")
-#         st.write(ipd.Audio("Audio\\\{}.wav".format(filename)))
+        st.write(ipd.Audio("Audio\\\{}.wav".format(filename)))
         st.write("SCROLL DOWN AND CLICK EMOTIONS BUTTON (⬇)")
 
 
@@ -176,11 +172,10 @@ def stream():
         "CHOOSE A FILE (Do not select multiple files)", accept_multiple_files=True)
     print("uploaded :  ", len(uploaded_file))
     save_audio(uploaded_file)
-    st.write("Audio saved")
     for i in uploaded_file:
         names = i.name
         st.write(f"YOU SELECTED : {names}")
-#         st.write(ipd.Audio("Audio\\\{}".format(names)))
+        st.write(ipd.Audio("Audio\\\{}".format(names)))
         flag = 2
 # -----------------------------------------------------------------------------------------------------------------------------------
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -235,7 +230,7 @@ def stream():
         elif flag == 2:
             print("in2 iam here")
             with col11:
-                kp = plotextract("Audio\{}".format(names))
+                kp = plotextract("Audio\\\{}".format(names))
                 st.subheader("YOUR VOICE")
                 st.line_chart(kp)
             with col22:
