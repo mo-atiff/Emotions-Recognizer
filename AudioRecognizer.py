@@ -162,6 +162,7 @@ def record(filename):
         st.write("# Error here")
         recording = sd.rec(int(duration * freq),
                            samplerate=freq, channels=2)
+        st.write("# Idhar")
 
         sd.wait()
         kp = f"{filename}.wav"
