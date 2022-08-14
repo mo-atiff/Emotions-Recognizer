@@ -19,8 +19,8 @@ freq = 22050
 duration = 6
 
 
-model = load_model("Neuron")
-label = pickle.load(open("EmotionLabels.pkl", 'rb'))
+model = load_model("C:\\Users\\ATIF SHAIK\\Neuron")
+label = pickle.load(open("C:\\Users\\ATIF SHAIK\\EmotionLabels.pkl", 'rb'))
 
 
 st.set_page_config(
@@ -28,11 +28,11 @@ st.set_page_config(
     page_icon="🔊",
     layout="wide",
     initial_sidebar_state="expanded",
-#     menu_items={
-#         'Get Help': 'https://www.extremelycoolapp.com/help',
-#         'Report a bug': "https://www.extremelycoolapp.com/bug",
-#         'About': "# This is a header. This is an *extremely* cool app!"
-#     }
+    #     menu_items={
+    #         'Get Help': 'https://www.extremelycoolapp.com/help',
+    #         'Report a bug': "https://www.extremelycoolapp.com/bug",
+    #         'About': "# This is a header. This is an *extremely* cool app!"
+    #     }
 )
 
 
@@ -40,12 +40,12 @@ def save_audio(file):
     for i in file:
         if i.size > 4000000:
             return 1
-        
-        if not os.path.exists("audio"):
-            os.makedirs("audio")
-            
-        folder = "audio"
-        
+
+        if not os.path.exists("Audio"):
+            os.makedirs("Audio")
+
+        folder = "Audio"
+
         datetoday = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         # clear the folder to avoid storage overload
         for filename in os.listdir(folder):
@@ -141,10 +141,12 @@ def record(filename):
                            samplerate=freq, channels=2)
 
         sd.wait()
-        write(os.path.join("audio", filename), freq, recording)
+        kp = f"{filename}.wav"
+        write(os.path.join("Audio", kp), freq, recording)
         print("saved")
         st.write(f"SELECTED FILE : {filename}.wav")
-        st.write(ipd.Audio(os.path.join("audio", filename)))
+        # kp = f"{filename}.wav"
+        st.write(ipd.Audio(os.path.join("Audio", kp)))
         st.write("SCROLL DOWN AND CLICK EMOTIONS BUTTON (⬇)")
 
 
@@ -182,13 +184,13 @@ def stream():
         names = i.name
         st.write(f"YOU SELECTED : {names}")
 #         st.write(ipd.Audio(os.path.join("audio\\\{}".format(names))))
-        st.write(ipd.Audio(os.path.join("audio", names)))
+        st.write(ipd.Audio(os.path.join("Audio", names)))
         flag = 2
 # -----------------------------------------------------------------------------------------------------------------------------------
     col1, col2, col3, col4, col5 = st.columns(5)
     # user_audio_name = "Audio\\\{}.wav".format(user_audio_name)
-#     user_audio_name = f"{user_audio_name}.wav"
-    user_audio_name = os.path.join("audio", user_audio_name)
+    user_audio_namey = f"{user_audio_name}.wav"
+    # user_audio_names = os.path.join("Audio", user_audio_name)
     with col3:
         st.write(' ')
         st.write(' ')
@@ -200,10 +202,10 @@ def stream():
             if len(uploaded_file) != 0:
                 print("File dragged")
                 # audioExtract("Audio\\\{}".format(names))
-                audioExtract(os.path.join("audio", names), model)
+                audioExtract(os.path.join("Audio", names), model)
             else:
                 print("file recorded")
-                audioExtract(os.path.join("audio", user_audio_name), model)
+                audioExtract(os.path.join("Audio", user_audio_namey), model)
                 # audioExtract(os.path.join("Audio", ), user_audio_name)
 
     def plotextract(filename):
@@ -222,11 +224,11 @@ def stream():
         if flag == 0:
             print("iam here")
             with col11:
-                kp = plotextract(user_audio_name)
+                kp = plotextract(os.path.join("Audio", user_audio_namey))
                 st.subheader("YOUR VOICE")
                 st.line_chart(kp)
             with col22:
-                pk = plotspec(user_audio_name)
+                pk = plotspec(os.path.join("Audio", user_audio_namey))
                 fig, ax = plt.subplots()
                 cax = ax.imshow(pk, interpolation='nearest',
                                 cmap=cm.coolwarm, origin='lower')
@@ -238,11 +240,11 @@ def stream():
         elif flag == 2:
             print("in2 iam here")
             with col11:
-                kp = plotextract(os.path.join("audio", names))
+                kp = plotextract(os.path.join("Audio", names))
                 st.subheader("YOUR VOICE")
                 st.line_chart(kp)
             with col22:
-                pk = plotspec(os.path.join("audio", names))
+                pk = plotspec(os.path.join("Audio", names))
                 fig, ax = plt.subplots()
                 cax = ax.imshow(pk, interpolation='nearest',
                                 cmap=cm.coolwarm, origin='lower')
