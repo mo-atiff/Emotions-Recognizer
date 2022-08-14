@@ -19,8 +19,8 @@ freq = 22050
 duration = 6
 
 
-model = load_model("Neuron")
-label = pickle.load(open("EmotionLabels.pkl", 'rb'))
+model = load_model("C:\\Users\\ATIF SHAIK\\Neuron")
+label = pickle.load(open("C:\\Users\\ATIF SHAIK\\EmotionLabels.pkl", 'rb'))
 
 
 st.set_page_config(
@@ -66,6 +66,28 @@ def save_audio(file):
             f.write(i.getbuffer())
 #         st.write(f"saved in : {file_path}")
         return 0
+
+
+def user_save(file):
+    if not os.path.exists("Audio"):
+        os.makedirs("Audio")
+
+    folder = "Audio"
+
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+    with open(os.path.join(folder, file), "wb") as f:
+#         file = BytesIO()
+        # file.write(b"Test 123")
+        f.write(file.getbuffer())
+
+    return 0
 
 
 def audioExtract(file_name, model):
@@ -137,15 +159,17 @@ def audioExtract(file_name, model):
 
 def record(filename):
     with st.spinner(f'Started Recording... It will automatically quit after 5 secs'):
+        st.write("# Error here")
         recording = sd.rec(int(duration * freq),
                            samplerate=freq, channels=2)
 
         sd.wait()
         kp = f"{filename}.wav"
         write(os.path.join("Audio", kp), freq, recording)
+        # save_audio(kp)
+        # user_save(kp)
         print("saved")
         st.write(f"SELECTED FILE : {filename}.wav")
-        # kp = f"{filename}.wav"
         st.write(ipd.Audio(os.path.join("Audio", kp)))
         st.write("SCROLL DOWN AND CLICK EMOTIONS BUTTON (⬇)")
 
